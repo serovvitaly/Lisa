@@ -13,6 +13,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.vk.sdk.VKSdk;
+import com.vk.sdk.api.VKApi;
+import com.vk.sdk.api.VKError;
+import com.vk.sdk.api.VKRequest;
+import com.vk.sdk.api.VKResponse;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -40,6 +46,8 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        //VKSdk.initialize(Context applicationContext);
     }
 
     @Override
@@ -81,10 +89,16 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_camera) {
-            // Handle the camera action
+
+            this.showPlacesPage();
+
         } else if (id == R.id.nav_gallery) {
 
+            showGalleryPage();
+
         } else if (id == R.id.nav_slideshow) {
+
+            showPeoplesPage();
 
         } else if (id == R.id.nav_manage) {
 
@@ -97,5 +111,38 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void showPlacesPage(){
+
+
+        VKRequest request = VKApi.users().get();
+
+        request.executeWithListener(new VKRequest.VKRequestListener() {
+            @Override
+            public void onComplete(VKResponse response) {
+                //Do complete stuff
+            }
+            @Override
+            public void onError(VKError error) {
+                //Do error stuff
+            }
+            @Override
+            public void attemptFailed(VKRequest request, int attemptNumber, int totalAttempts) {
+                //I don't really believe in progress
+            }
+        });
+
+        //VkApi.getPlacesList();
+    }
+
+    public void showPeoplesPage(){
+
+        //
+    }
+
+    public void showGalleryPage(){
+
+        //
     }
 }
