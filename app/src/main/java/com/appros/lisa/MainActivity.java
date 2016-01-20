@@ -13,8 +13,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.vk.sdk.VKSdk;
-import com.vk.sdk.api.VKApi;
+import com.appros.vk.Places;
+import com.appros.vk.Response;
+import com.appros.vk.places.PlacesSearchRequest;
 import com.vk.sdk.api.VKApiConst;
 import com.vk.sdk.api.VKError;
 import com.vk.sdk.api.VKParameters;
@@ -106,6 +107,8 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_manage) {
 
+            Places.getTypes();
+
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
@@ -120,6 +123,8 @@ public class MainActivity extends AppCompatActivity
     public void showPlacesPage(){
 
         VKRequest request = new VKRequest("friends.get", VKParameters.from(VKApiConst.USER_ID, 167600225));
+        //VKRequest request = new VKRequest("places.getTypes");
+        //VKRequest request = new VKRequest("places.getById", VKParameters.from("places", 4980426));
 
         request.executeWithListener(new VKRequest.VKRequestListener() {
             @Override
@@ -127,7 +132,7 @@ public class MainActivity extends AppCompatActivity
 
                 System.out.println("VKApi.users onComplete");
 
-                System.out.println( response.json.toString() );
+                System.out.println(response.json.toString());
 
             }
 
@@ -136,7 +141,7 @@ public class MainActivity extends AppCompatActivity
 
                 System.out.println("VKApi.users onError");
 
-                System.out.println(error.toString() );
+                System.out.println(error.toString());
             }
 
             @Override
@@ -151,7 +156,21 @@ public class MainActivity extends AppCompatActivity
 
     public void showPeoplesPage(){
 
-        //
+        PlacesSearchRequest placesSearchRequest = new PlacesSearchRequest(){
+
+            public void onComplete(Response response){
+
+                //
+            }
+
+        };
+
+        placesSearchRequest.setLatitude(59.935624);
+
+        placesSearchRequest.setLongitude(30.325875);
+
+        placesSearchRequest.execute();
+
     }
 
     public void showGalleryPage(){
