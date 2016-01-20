@@ -15,12 +15,17 @@ import android.view.MenuItem;
 
 import com.vk.sdk.VKSdk;
 import com.vk.sdk.api.VKApi;
+import com.vk.sdk.api.VKApiConst;
 import com.vk.sdk.api.VKError;
+import com.vk.sdk.api.VKParameters;
 import com.vk.sdk.api.VKRequest;
 import com.vk.sdk.api.VKResponse;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private static String sTokenKey = "eJp4Uif2zTY52G2nB81h";
+    //private static String[] sMyScope = new String[]{VKScope.FRIENDS, VKScope.WALL, VKScope.PHOTOS, VKScope.NOHTTPS};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +52,6 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        //VKSdk.initialize(Context applicationContext);
     }
 
     @Override
@@ -115,21 +119,30 @@ public class MainActivity extends AppCompatActivity
 
     public void showPlacesPage(){
 
-
-        VKRequest request = VKApi.users().get();
+        VKRequest request = new VKRequest("friends.get", VKParameters.from(VKApiConst.USER_ID, 167600225));
 
         request.executeWithListener(new VKRequest.VKRequestListener() {
             @Override
             public void onComplete(VKResponse response) {
-                //Do complete stuff
+
+                System.out.println("VKApi.users onComplete");
+
+                System.out.println( response.json.toString() );
+
             }
+
             @Override
             public void onError(VKError error) {
-                //Do error stuff
+
+                System.out.println("VKApi.users onError");
+
+                System.out.println(error.toString() );
             }
+
             @Override
             public void attemptFailed(VKRequest request, int attemptNumber, int totalAttempts) {
-                //I don't really believe in progress
+
+                System.out.println("VKApi.users attemptFailed");
             }
         });
 
