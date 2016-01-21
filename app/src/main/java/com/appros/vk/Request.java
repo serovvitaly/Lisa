@@ -15,6 +15,16 @@ public class Request {
 
     protected VKRequest.VKRequestListener requestListener;
 
+    public interface Listener {
+
+        public void onComplete(VKResponse response);
+
+        public void onError(VKError error);
+
+        public void attemptFailed(VKRequest request, int attemptNumber, int totalAttempts);
+
+    }
+
     public Request(String method) {
 
         this.request = new VKRequest(method);
