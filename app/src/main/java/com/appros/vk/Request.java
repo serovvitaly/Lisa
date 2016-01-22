@@ -1,6 +1,9 @@
 package com.appros.vk;
 
+import android.util.Log;
+
 import com.vk.sdk.api.VKError;
+import com.vk.sdk.api.VKParameters;
 import com.vk.sdk.api.VKRequest;
 import com.vk.sdk.api.VKResponse;
 
@@ -8,6 +11,8 @@ import com.vk.sdk.api.VKResponse;
  * Created by Vitaly on 20.01.2016.
  */
 public class Request {
+
+    protected VKParameters parameters;
 
     protected String methodBase;
 
@@ -36,24 +41,30 @@ public class Request {
             @Override
             public void onComplete(VKResponse response) {
 
-                System.out.println("VKApi.users onComplete");
+                super.onComplete(response);
+
+                System.out.println("VKApi.* onComplete");
 
                 System.out.println(response.json.toString());
+
+                Log.d("onComplete", " - Авторизирован");
 
             }
 
             @Override
             public void onError(VKError error) {
 
-                System.out.println("VKApi.users onError");
+                System.out.println("VKApi.* onError");
 
                 System.out.println(error.toString());
+
+                Log.d("onError", " - Авторизирован");
             }
 
             @Override
             public void attemptFailed(VKRequest request, int attemptNumber, int totalAttempts) {
 
-                System.out.println("VKApi.users attemptFailed");
+                System.out.println("VKApi.* attemptFailed");
             }
         });
     }
@@ -71,6 +82,14 @@ public class Request {
     public void attemptFailed() {
 
         //
+    }
+
+    protected VKRequest getRequest() {
+        return this.request;
+    }
+
+    protected VKParameters getParameters() {
+        return this.parameters;
     }
 
     /**

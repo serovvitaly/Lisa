@@ -1,6 +1,7 @@
 package com.appros.lisa;
 
 import android.content.Context;
+import android.net.Uri;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
@@ -15,8 +16,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.appros.adapters.ImageAdapter;
 import com.appros.vk.Places;
 import com.appros.vk.Response;
 import com.appros.vk.places.PlacesSearchRequest;
@@ -26,7 +31,6 @@ import com.vk.sdk.api.VKParameters;
 import com.vk.sdk.api.VKRequest;
 import com.vk.sdk.api.VKResponse;
 
-import java.util.Iterator;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity
@@ -103,32 +107,32 @@ public class MainActivity extends AppCompatActivity
         switch (id) {
 
             case R.id.wifi_list:
-
                 this.showWifiListPage();
-
                 break;
 
-        }
+            case R.id.nav_camera:
+                this.showPlacesPage();
+                break;
 
-        if (id == R.id.nav_camera) {
+            case R.id.nav_gallery:
+                showGalleryPage();
+                break;
 
-            this.showPlacesPage();
+            case R.id.search_places:
+                showPeoplesPage();
+                break;
 
-        } else if (id == R.id.nav_gallery) {
+            case R.id.nav_manage:
+                Places.getTypes();
+                break;
 
-            showGalleryPage();
+            case R.id.nav_share:
+                //
+                break;
 
-        } else if (id == R.id.nav_slideshow) {
-
-            showPeoplesPage();
-
-        } else if (id == R.id.nav_manage) {
-
-            Places.getTypes();
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
+            case R.id.nav_send:
+                //
+                break;
 
         }
 
@@ -159,9 +163,36 @@ public class MainActivity extends AppCompatActivity
             mainTextView.append("\n----------------");
         }
 
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+        Context context = drawer.getContext();
+
     }
 
     public void showPlacesPage(){
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+        Context context = drawer.getContext();
+
+        /*
+        ImageView imageView = new ImageView(context);
+        Uri imageUri = Uri.parse("http://otvet.imgsmail.ru/download/c86d2883678beac2e8247bf6abefd370_i-799.jpg");
+        imageView.setImageURI(imageUri);
+        */
+
+        GridView gridView = new GridView(context);
+
+        gridView.setColumnWidth(90);
+
+        gridView.setAdapter(new ImageAdapter(this));
+
+
+        RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.main_relative_layout);
+
+        relativeLayout.addView(gridView);
+
+
 
         VKRequest request = new VKRequest("friends.get", VKParameters.from(VKApiConst.USER_ID, 167600225));
         //VKRequest request = new VKRequest("places.getTypes");
@@ -197,14 +228,7 @@ public class MainActivity extends AppCompatActivity
 
     public void showPeoplesPage(){
 
-        PlacesSearchRequest placesSearchRequest = new PlacesSearchRequest(){
-
-            public void onComplete(Response response){
-
-                //
-            }
-
-        };
+        PlacesSearchRequest placesSearchRequest = new PlacesSearchRequest();
 
         placesSearchRequest.setLatitude(59.935624);
 

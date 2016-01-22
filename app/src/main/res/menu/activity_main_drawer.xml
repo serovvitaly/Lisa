@@ -14,9 +14,8 @@
             android:icon="@drawable/ic_menu_gallery"
             android:title="Люди" />
         <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Галерея" />
+            android:id="@+id/search_places"
+            android:title="Поиск мест" />
         <item
             android:id="@+id/nav_manage"
             android:icon="@drawable/ic_menu_manage"
