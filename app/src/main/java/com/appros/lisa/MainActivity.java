@@ -1,5 +1,8 @@
 package com.appros.lisa;
 
+import android.content.Context;
+import android.net.wifi.ScanResult;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -12,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.appros.vk.Places;
 import com.appros.vk.Response;
@@ -21,6 +25,9 @@ import com.vk.sdk.api.VKError;
 import com.vk.sdk.api.VKParameters;
 import com.vk.sdk.api.VKRequest;
 import com.vk.sdk.api.VKResponse;
+
+import java.util.Iterator;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -93,6 +100,16 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
+        switch (id) {
+
+            case R.id.wifi_list:
+
+                this.showWifiListPage();
+
+                break;
+
+        }
+
         if (id == R.id.nav_camera) {
 
             this.showPlacesPage();
@@ -118,6 +135,30 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void showWifiListPage() {
+
+        WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+
+        List<ScanResult> wifi_points_list = wifi.getScanResults();
+
+        TextView mainTextView = (TextView) this.findViewById(R.id.main_text_view);
+
+        mainTextView.setText("Список найденных точек доступа Wi-Fi\n" +
+                "----------------");
+
+        for (ScanResult wifi_point : wifi_points_list) {
+
+            String wifi_ssid = wifi_point.SSID;
+
+            int wifi_level = wifi_point.level;
+
+            mainTextView.append("\nSSID: " + wifi_ssid);
+            mainTextView.append("\nУровень сигнала: " + wifi_level);
+            mainTextView.append("\n----------------");
+        }
+
     }
 
     public void showPlacesPage(){
