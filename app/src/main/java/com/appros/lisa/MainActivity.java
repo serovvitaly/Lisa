@@ -170,17 +170,17 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void showPlacesPage(){
-
+/*
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         Context context = drawer.getContext();
-
+*/
         /*
         ImageView imageView = new ImageView(context);
         Uri imageUri = Uri.parse("http://otvet.imgsmail.ru/download/c86d2883678beac2e8247bf6abefd370_i-799.jpg");
         imageView.setImageURI(imageUri);
         */
-
+/*
         GridView gridView = new GridView(context);
 
         gridView.setColumnWidth(90);
@@ -191,11 +191,11 @@ public class MainActivity extends AppCompatActivity
         RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.main_relative_layout);
 
         relativeLayout.addView(gridView);
+*/
 
 
-
-        VKRequest request = new VKRequest("friends.get", VKParameters.from(VKApiConst.USER_ID, 167600225));
-        //VKRequest request = new VKRequest("places.getTypes");
+        //VKRequest request = new VKRequest("friends.get", VKParameters.from(VKApiConst.USER_ID, 167600225));
+        VKRequest request = new VKRequest("places.getTypes");
         //VKRequest request = new VKRequest("places.getById", VKParameters.from("places", 4980426));
 
         request.executeWithListener(new VKRequest.VKRequestListener() {

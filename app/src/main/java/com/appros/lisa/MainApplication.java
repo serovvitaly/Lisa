@@ -1,11 +1,10 @@
 package com.appros.lisa;
 
-import android.content.Intent;
+import android.util.Log;
 
 import com.vk.sdk.VKAccessToken;
 import com.vk.sdk.VKAccessTokenTracker;
 import com.vk.sdk.VKSdk;
-import com.vk.sdk.api.VKError;
 
 /**
  * Created by vitaly on 20.01.16.
@@ -13,13 +12,14 @@ import com.vk.sdk.api.VKError;
 public class MainApplication extends android.app.Application {
 
     @Override
-    public void onCreate(){
+    public void onCreate() {
 
         super.onCreate();
 
         vkAccessTokenTracker.startTracking();
 
-        VKSdk.initialize(this);
+        //VKSdk.initialize(this);
+        VKSdk.initialize(this).withPayments();
     }
 
     VKAccessTokenTracker vkAccessTokenTracker = new VKAccessTokenTracker() {
@@ -28,6 +28,8 @@ public class MainApplication extends android.app.Application {
             if (newToken == null) {
                 // VKAccessToken is invalid
                 System.out.println("Не удалось получить валидный токен...");
+            } else {
+                Log.d("FOO", "ТОКЕН ПОЛУЧЕН!!!");
             }
         }
     };
