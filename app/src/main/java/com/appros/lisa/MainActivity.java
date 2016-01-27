@@ -42,12 +42,19 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private static String sTokenKey = "eJp4Uif2zTY52G2nB81h";
-    //private static String[] sMyScope = new String[]{VKScope.FRIENDS, VKScope.WALL, VKScope.PHOTOS, VKScope.NOHTTPS};
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Boolean vkUserIsLoggedIn = VKSdk.isLoggedIn();
+
+        if (vkUserIsLoggedIn) {
+
+            setContentView(R.layout.welcome);
+
+            return;
+        }
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -62,14 +69,12 @@ public class MainActivity extends AppCompatActivity
         });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
     }
 
     @Override
@@ -164,8 +169,11 @@ public class MainActivity extends AppCompatActivity
 
             int wifi_level = wifi_point.level;
 
+            String wifi_mac = wifi_point.BSSID;
+
             mainTextView.append("\nSSID: " + wifi_ssid);
             mainTextView.append("\nУровень сигнала: " + wifi_level);
+            mainTextView.append("\nMAC адрес: " + wifi_mac);
             mainTextView.append("\n----------------");
         }
 
