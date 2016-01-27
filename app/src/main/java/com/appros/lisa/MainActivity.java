@@ -7,6 +7,7 @@ import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -25,11 +26,13 @@ import com.appros.adapters.ImageAdapter;
 import com.appros.vk.Places;
 import com.appros.vk.Response;
 import com.appros.vk.places.PlacesSearchRequest;
+import com.vk.sdk.VKSdk;
 import com.vk.sdk.api.VKApiConst;
 import com.vk.sdk.api.VKError;
 import com.vk.sdk.api.VKParameters;
 import com.vk.sdk.api.VKRequest;
 import com.vk.sdk.api.VKResponse;
+import com.vk.sdk.util.VKUtil;
 
 import java.util.List;
 
@@ -193,6 +196,15 @@ public class MainActivity extends AppCompatActivity
         relativeLayout.addView(gridView);
 */
 
+        VKSdk.login(this);
+
+
+        String[] fingerprints = VKUtil.getCertificateFingerprint(this, this.getPackageName());
+
+        for (String fingerprint : fingerprints) {
+
+            Log.d("FingerPrints", fingerprint);
+        }
 
         //VKRequest request = new VKRequest("friends.get", VKParameters.from(VKApiConst.USER_ID, 167600225));
         VKRequest request = new VKRequest("places.getTypes");
