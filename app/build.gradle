@@ -3,9 +3,9 @@ apply plugin: 'com.android.application'
 android {
     signingConfigs {
         MainKeyStore {
-            keyAlias 'MainKeyStore'
+            keyAlias 'DevKeyStore'
             keyPassword '123456'
-            storeFile file('/home/vitaly/bin/MainKeyStore.jks')
+            storeFile file('C:/Users/Vitaly/AndroidStudioProjects/DevKeyStore.jks')
             storePassword '123456'
         }
     }

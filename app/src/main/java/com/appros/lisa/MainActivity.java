@@ -1,6 +1,7 @@
 package com.appros.lisa;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
@@ -26,6 +27,8 @@ import com.appros.adapters.ImageAdapter;
 import com.appros.vk.Places;
 import com.appros.vk.Response;
 import com.appros.vk.places.PlacesSearchRequest;
+import com.vk.sdk.VKAccessToken;
+import com.vk.sdk.VKCallback;
 import com.vk.sdk.VKSdk;
 import com.vk.sdk.api.VKApiConst;
 import com.vk.sdk.api.VKError;
@@ -198,7 +201,6 @@ public class MainActivity extends AppCompatActivity
 
         VKSdk.login(this);
 
-
         String[] fingerprints = VKUtil.getCertificateFingerprint(this, this.getPackageName());
 
         for (String fingerprint : fingerprints) {
@@ -209,6 +211,8 @@ public class MainActivity extends AppCompatActivity
         //VKRequest request = new VKRequest("friends.get", VKParameters.from(VKApiConst.USER_ID, 167600225));
         VKRequest request = new VKRequest("places.getTypes");
         //VKRequest request = new VKRequest("places.getById", VKParameters.from("places", 4980426));
+
+        //request.
 
         request.executeWithListener(new VKRequest.VKRequestListener() {
             @Override
@@ -253,5 +257,24 @@ public class MainActivity extends AppCompatActivity
     public void showGalleryPage(){
 
         //
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (!VKSdk.onActivityResult(requestCode, resultCode, data, new VKCallback<VKAccessToken>() {
+            @Override
+            public void onResult(VKAccessToken res) {
+                // Пользователь успешно авторизовался
+                Log.d("OK!", "Пользователь успешно авторизовался");
+            }
+            @Override
+            public void onError(VKError error) {
+                // Произошла ошибка авторизации (например, пользователь запретил авторизацию)
+                Log.d("Fail{", "Произошла ошибка авторизации (например, пользователь запретил авторизацию)");
+            }
+        })) {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
     }
 }

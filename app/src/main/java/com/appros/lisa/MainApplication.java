@@ -18,8 +18,7 @@ public class MainApplication extends android.app.Application {
 
         vkAccessTokenTracker.startTracking();
 
-        //VKSdk.initialize(this);
-        VKSdk.initialize(this).withPayments();
+        VKSdk.initialize(this);
     }
 
     VKAccessTokenTracker vkAccessTokenTracker = new VKAccessTokenTracker() {
