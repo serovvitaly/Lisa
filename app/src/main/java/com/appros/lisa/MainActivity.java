@@ -118,6 +118,14 @@ public class MainActivity extends AppCompatActivity
                 //
                 break;
 
+            case R.id.vk_logout:
+
+                VKSdk.logout();
+
+                //showWelcomeLayout();
+
+                break;
+
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
