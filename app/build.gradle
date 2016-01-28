@@ -2,12 +2,6 @@ apply plugin: 'com.android.application'
 
 android {
     signingConfigs {
-        MainKeyStore {
-            keyAlias 'DevKeyStore'
-            keyPassword '123456'
-            storeFile file('C:/Users/Vitaly/AndroidStudioProjects/DevKeyStore.jks')
-            storePassword '123456'
-        }
     }
     compileSdkVersion 23
     buildToolsVersion "23.0.2"

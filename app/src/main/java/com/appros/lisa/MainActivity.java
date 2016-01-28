@@ -2,7 +2,6 @@ package com.appros.lisa;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
@@ -18,21 +17,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.GridView;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
+import android.widget.Button;
 import android.widget.TextView;
 
-import com.appros.adapters.ImageAdapter;
 import com.appros.vk.Places;
-import com.appros.vk.Response;
 import com.appros.vk.places.PlacesSearchRequest;
 import com.vk.sdk.VKAccessToken;
 import com.vk.sdk.VKCallback;
 import com.vk.sdk.VKSdk;
-import com.vk.sdk.api.VKApiConst;
 import com.vk.sdk.api.VKError;
-import com.vk.sdk.api.VKParameters;
 import com.vk.sdk.api.VKRequest;
 import com.vk.sdk.api.VKResponse;
 import com.vk.sdk.util.VKUtil;
@@ -48,33 +41,13 @@ public class MainActivity extends AppCompatActivity
 
         Boolean vkUserIsLoggedIn = VKSdk.isLoggedIn();
 
-        if (vkUserIsLoggedIn) {
+        if (!vkUserIsLoggedIn) {
 
-            setContentView(R.layout.welcome);
-
-            return;
+            showWelcomeLayout();
         }
-
-        setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        else {
+            showMainLayout();
+        }
     }
 
     @Override
@@ -207,8 +180,6 @@ public class MainActivity extends AppCompatActivity
         relativeLayout.addView(gridView);
 */
 
-        VKSdk.login(this);
-
         String[] fingerprints = VKUtil.getCertificateFingerprint(this, this.getPackageName());
 
         for (String fingerprint : fingerprints) {
@@ -267,6 +238,47 @@ public class MainActivity extends AppCompatActivity
         //
     }
 
+    public void showWelcomeLayout(){
+
+        setContentView(R.layout.welcome);
+
+        Button welcomeLoginButton = (Button) findViewById(R.id.welcome_login_button);
+
+        View.OnClickListener welcomeLoginButtonOnClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                VKSdk.login(MainActivity.this);
+            }
+        };
+
+        welcomeLoginButton.setOnClickListener(welcomeLoginButtonOnClickListener);
+
+    }
+
+    public void showMainLayout(){
+
+        setContentView(R.layout.activity_main);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -275,11 +287,15 @@ public class MainActivity extends AppCompatActivity
             public void onResult(VKAccessToken res) {
                 // Пользователь успешно авторизовался
                 Log.d("OK!", "Пользователь успешно авторизовался");
+
+                showMainLayout();
             }
             @Override
             public void onError(VKError error) {
                 // Произошла ошибка авторизации (например, пользователь запретил авторизацию)
                 Log.d("Fail{", "Произошла ошибка авторизации (например, пользователь запретил авторизацию)");
+
+                showMainLayout();
             }
         })) {
             super.onActivityResult(requestCode, resultCode, data);
